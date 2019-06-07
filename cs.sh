@@ -1,4 +1,4 @@
-*************************************************************************
+#*************************************************************************
 #    > File Name: cs.sh
 #    > Author: overkazaf
 #    > Mail:overkazaf@gmail.com 
@@ -14,38 +14,50 @@ temp2=$(mktemp -t tmp.sadfaldfjksdfjkasdf)
 tmp_curl=$(mktemp -t tmp.curl_xxsafksdfladf)
 searched_name=$(mktemp -t tmp.searchedxxxxxx)
 
+DOMAIN="http://159.203.118.69"
+PORT="7777"
+
 function others {
 	dialog --inputbox "Enter the coffee brand to search: " 20 40 2> $searched_name
 }
 
-function call_curl {
-
-  curl -X GET -H "User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 12_1_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/16C101 MicroMessenger/7.0.4(0x17000428) NetType/4G Language/zh_CN" -H "Cookie: JSESSIONID=51F17E3ADDD8EB5DC7908D93A947AE0C" -H "X-Requested-With: XMLHttpRequest" -H "Host: tq.365taoquan.cn" -H "Referer: http://tq.365taoquan.cn/seller/?productId=21&agentId=88" "http://tq.365taoquan.cn/seller//commodity/21?_=1559884551901" \
-	| jq -r 'map(select(.commodityProperty=="TICKET"))|map(.name,.sellingPrice)|reduce .[] as $item (""; if $item|type == "number" then .+"  【￥"+($item|tostring)+"】####" else .+$item end)|split("####")|.[0:-1]|join("\n")' > $tmp_curl
-  
-  echo $(cat $tmp_curl) >starbucks.txt
+function show_textbox {
+	dialog --textbox $tmp_curl 20 50
 }
 
-function fetch_starbucks_list {
-	call_curl
+# Getting template from my VPS
+function get_curl_template {
+  curl -X GET "$DOMAIN:$PORT" >$temp
+}
+
+function call_curl_by_template {
+  get_curl_template
+  local cmd
+  cmd=$(cat $temp)
+  str=$1
+  # TODO: Replace the JSESSIONID first
+  cmd=${cmd//####/$str} # Replace the commodity id
+  sh -c "$cmd" >$temp
 }
 
 function get_starbucks {
-	curl -X GET -H "User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 12_1_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/16C101 MicroMessenger/7.0.4(0x17000428) NetType/4G Language/zh_CN" -H "Cookie: JSESSIONID=51F17E3ADDD8EB5DC7908D93A947AE0C" -H "X-Requested-With: XMLHttpRequest" -H "Host: tq.365taoquan.cn" -H "Referer: http://tq.365taoquan.cn/seller/?productId=21&agentId=88" "http://tq.365taoquan.cn/seller//commodity/21?_=1559884551901" \
-	| jq -r 'map(select(.commodityProperty=="TICKET"))|map(.name,.sellingPrice)|reduce .[] as $item (""; if $item|type == "number" then .+"  【￥"+($item|tostring)+"】####" else .+$item end)|split("####")|.[0:-1]|join("\n")' > $tmp_curl
+	call_curl_by_template 21
+	cat $temp | \
+	jq -r 'map(select(.commodityProperty=="TICKET"))|map(.name,.sellingPrice)|reduce .[] as $item (""; if $item|type == "number" then .+"  【￥"+($item|tostring)+"】####" else .+$item end)|split("####")|.[0:-1]|join("\n")' > $tmp_curl
   
 	echo $(cat $tmp_curl) >starbucks.txt
 	
-	dialog --textbox $tmp_curl 20 50
+	show_textbox
 }
 
 function get_costa {
-	curl -X GET -H "User-Agent: Mozilla/5.0 (iPhone; CPU iPhone OS 12_1_2 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Mobile/16C101 MicroMessenger/7.0.4(0x17000428) NetType/4G Language/zh_CN" -H "Cookie: JSESSIONID=51F17E3ADDD8EB5DC7908D93A947AE0C" -H "X-Requested-With: XMLHttpRequest" -H "Host: tq.365taoquan.cn" -H "Referer: http://tq.365taoquan.cn/seller/?productId=28&agentId=88" "http://tq.365taoquan.cn/seller//commodity/28?_=1559884551901" \
-	| jq -r 'map(select(.commodityProperty=="TICKET"))|map(.name,.sellingPrice)|reduce .[] as $item (""; if $item|type == "number" then .+"  【￥"+($item|tostring)+"】####" else .+$item end)|split("####")|.[0:-1]|join("\n")' > $tmp_curl
-  
+	call_curl_by_template 28
+	cat $temp | \
+	jq -r 'map(select(.commodityProperty=="TICKET"))|map(.name,.sellingPrice)|reduce .[] as $item (""; if $item|type == "number" then .+"  【￥"+($item|tostring)+"】####" else .+$item end)|split("####")|.[0:-1]|join("\n")' > $tmp_curl
+
 	echo $(cat $tmp_curl) >costa.txt
 	
-	dialog --textbox $tmp_curl 20 50
+	show_textbox
 }
 
 function foo {

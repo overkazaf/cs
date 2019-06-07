@@ -44,10 +44,11 @@ Simply call the shell script, make sure you've already set the permissions with 
 ### DEMO
 ![cs_demo](https://drive.google.com/open?id=1wAmIcXofgsXKn7KCMLjcZezAs48b8rzQ)
 
+### Tips
+JSESSIONID field will be expired in some hours, so we should update this value from relogging in, this compromise will be handled ASAP.
 
 ## Future Plan
 + More coffee brands supports
 + Customatic coupon channels
 + Custonmatic Faas based searching logic
 + Maybe we can order coffee on the terminal eventually(LOL)
-
