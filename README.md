@@ -41,8 +41,13 @@ Simply call the shell script, make sure you've already set the permissions with 
 ```
 
 
+### DEMO
+![cs_demo](https://drive.google.com/open?id=1wAmIcXofgsXKn7KCMLjcZezAs48b8rzQ)
+
+
 ## Future Plan
 + More coffee brands supports
 + Customatic coupon channels
 + Custonmatic Faas based searching logic
 + Maybe we can order coffee on the terminal eventually(LOL)
+
