@@ -1,5 +1,5 @@
 # CS
-CS is short for "Coffee Shell", which is a shell based script built on top of **dialog** components lib, to enable programmers with their time and $s in searching coffee coupons.
+CS is short for "Coffee Shell", which is a shell based script built on top of **dialog** components lib, to enable programmers with their time and $s while searching coffee coupons.
 
 ## Preparation
 
@@ -11,7 +11,11 @@ brew install dialog
 ```
 
 Secondly, configure and install the shell(or you can simply download this git repo and run the cs.sh shell script)
+```shell
+./cs.sh
+```
 
+**TRY IT LATER**
 ```shell
 ./configure
 
@@ -22,16 +26,15 @@ make install
 
 
 ### Linux Users
-
 #### Ubuntu
-todo
+```shell
+apt-get install dialog
+```
 
 #### CentOS
-todo
-
-#### Debian
-todo
-
+```shell
+yum install dialog
+```
 
 
 ### Usage
@@ -42,7 +45,7 @@ Simply call the shell script, make sure you've already set the permissions with 
 
 
 ### DEMO
-![cs_demo](https://drive.google.com/open?id=1wAmIcXofgsXKn7KCMLjcZezAs48b8rzQ)
+![cs_demo](https://i.loli.net/2019/06/08/5cfa8ed46502968961.gif)
 
 ### Tips
 JSESSIONID field will be expired in some hours, so we should update this value from relogging in, this compromise will be handled ASAP.
