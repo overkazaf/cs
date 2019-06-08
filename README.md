@@ -45,7 +45,7 @@ Simply call the shell script, make sure you've already set the permissions with 
 
 
 ### DEMO
-![cs_demo](https://i.loli.net/2019/06/08/5cfa8ed46502968961.gif)
+![cs_demo](https://i.loli.net/2019/06/08/5cfb88216fd3929407.gif)
 
 ### Tips
 JSESSIONID field will be expired in some hours, so we should update this value from relogging in, this compromise will be handled ASAP.

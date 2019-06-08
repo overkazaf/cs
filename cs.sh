@@ -20,13 +20,25 @@ searched_name=$(mktemp -t tmp.searchedxxxxxx)
 DOMAIN="http://159.203.118.69"
 PORT="7777"
 
-function others {
-	dialog --inputbox "Enter the coffee brand to search: " 20 40 2> $searched_name
-}
-
 function show_textbox {
 	dialog --title "最高可使用2元红包" --textbox $tmp_curl 20 50
 }
+
+function others {
+	dialog --inputbox "Enter other commodity id to search: " 20 40 2> $searched_name
+	
+	param=$(cat $searched_name)
+
+	echo $param
+	call_curl_by_template $param
+	cat $temp | \
+	jq -r 'map(select(.commodityProperty=="TICKET"))|map(.name,.sellingPrice)|reduce .[] as $item (""; if $item|type == "number" then .+"  【￥"+($item|tostring)+"】####" else .+$item end)|split("####")|.[0:-1]|join("\n")' > $tmp_curl
+	
+	echo $(cat $tmp_curl) >others.txt
+	
+	show_textbox
+}
+
 
 # Getting template from my VPS
 function get_curl_template {
