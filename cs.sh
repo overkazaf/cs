@@ -9,9 +9,12 @@
 
 set +x
 
+# Template files
 temp=$(mktemp -t tmp.xxxxxyyyyyzzzzz)
 temp2=$(mktemp -t tmp.sadfaldfjksdfjkasdf)
 tmp_curl=$(mktemp -t tmp.curl_xxsafksdfladf)
+
+# For customatic searching
 searched_name=$(mktemp -t tmp.searchedxxxxxx)
 
 DOMAIN="http://159.203.118.69"
@@ -22,7 +25,7 @@ function others {
 }
 
 function show_textbox {
-	dialog --textbox $tmp_curl 20 50
+	dialog --title "最高可使用2元红包" --textbox $tmp_curl 20 50
 }
 
 # Getting template from my VPS
@@ -60,8 +63,18 @@ function get_costa {
 	show_textbox
 }
 
+function get_percific_ocean {
+	call_curl_by_template 27
+	cat $temp | \
+	jq -r 'map(select(.commodityProperty=="TICKET"))|map(.name,.sellingPrice)|reduce .[] as $item (""; if $item|type == "number" then .+"  【￥"+($item|tostring)+"】####" else .+$item end)|split("####")|.[0:-1]|join("\n")' > $tmp_curl
+
+	echo $(cat $tmp_curl) >percific_ocean.txt
+	
+	show_textbox
+}
+
 function foo {
-	dialog --msgbox "foo" 20 40 
+	dialog --msgbox "TODO" 20 40 
 }
 
 
@@ -70,9 +83,8 @@ do
 	dialog --menu "Coffee Menu" 20 40 10 \
 		1 "Starbucks" \
 		2 "Costa" \
-		3 "Peet's" \
-		4 "Luckin Coffee" \
-		5 "Others" \
+		3 "Percific Ocean" \
+		4 "Others" \
 		0 "Exit" 2> $temp  
 	if [ $? -eq 1 ]
 	then
@@ -88,15 +100,13 @@ do
 		2)
 			get_costa ;;
 		3)
-			foo ;;
+			get_percific_ocean ;;
 		4)
-			foo ;;
-		5)
 			others ;;
 		0)
 			break ;;
 		*)
-			dialog --msgbox "Selection error" ;;
+			dialog --msgbox "Selection error, please check" ;;
 	esac
 done
 
