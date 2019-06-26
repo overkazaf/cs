@@ -53,5 +53,5 @@ JSESSIONID field will be expired in some hours, so we should update this value f
 ## Future Plan
 + More coffee brands supports
 + Customatic coupon channels
-+ Custonmatic Faas based searching logic
++ Customatic FAAS based searching logic
 + Maybe we can order coffee on the terminal eventually(LOL)
